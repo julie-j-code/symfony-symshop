@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController{
 
+/**
+ *@Route()
+ */
     public function index(){
         var_dump("salut") ;
         die;
