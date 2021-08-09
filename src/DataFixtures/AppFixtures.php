@@ -9,10 +9,18 @@ use App\Entity\Product;
 use Bezhanov\Faker\Provider\Commerce;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
+
+    protected $slugger;
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
+
     public function load(ObjectManager $manager)
     {
         // $product = new Product();
@@ -26,7 +34,8 @@ class AppFixtures extends Fixture
             $product = new Product;
             $product->setName($faker->productName())
                 ->setPrice(mt_rand(100, 200))
-                ->setSlug($faker->slug());
+                // ->setSlug($faker->slug());
+                ->setSlug(strtolower($this->slugger->slug($product->getName())));
 
             $manager->persist($product);
         };
