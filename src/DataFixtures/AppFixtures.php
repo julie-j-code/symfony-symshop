@@ -2,9 +2,14 @@
 
 namespace App\DataFixtures;
 
+
+
+use Faker\Factory;
 use App\Entity\Product;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use Bezhanov\Faker\Provider\Commerce;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+
 
 class AppFixtures extends Fixture
 {
@@ -13,11 +18,15 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
 
+        // Use Faker\Factory::create() to create and initialize a Faker generator, which can generate data by accessing methods named after the type of data you want.
+
+        $faker = Factory::create('fr_FR');
+        $faker->addProvider(new Commerce($faker));
         for ($p = 0; $p < 100; $p++) {
             $product = new Product;
-            $product->setName("Produit n° $p")
+            $product->setName($faker->productName())
                 ->setPrice(mt_rand(100, 200))
-                ->setSlug("product-n-$p");
+                ->setSlug($faker->slug());
 
             $manager->persist($product);
         };
