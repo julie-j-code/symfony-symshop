@@ -21,7 +21,10 @@
         "symfony/proxy-manager-bridge": "5.1.*",
         "symfony/string": "5.1.*",
         "symfony/translation": "5.1.*",
-        "symfony/yaml": "5.1.*"
+        "symfony/twig-bundle": "5.1.*",
+        "symfony/yaml": "5.1.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "optimize-autoloader": true,
