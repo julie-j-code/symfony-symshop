@@ -6,13 +6,13 @@ Accueil
 
 <h1>Nos produits phares</h1>
 <div class="row">
-    {% for i in 1..3 %}
+    {% for product in products %}
     <div class="col">
         <div class="card">
-            <img src="https://picsum.photos/400/400" class="img-fluid" alt="image du  produit">
+            <img src="{{product.mainPicture}}" class="img-fluid" alt="image du  produit">
             <div class="card-body">
-                <div class="card-title">Produit X</div>
-                <p class="card-text">Blabla</p>
+                <div class="card-title">{{product.name}}</div>
+                <p class="card-text">{{product.shortDescription}}</p>
                 <a href="" class="btn btn-info">En savoir plus</a>
                 <a href="" class="btn btn-warning">Ajouter au panier</a>
             </div>
