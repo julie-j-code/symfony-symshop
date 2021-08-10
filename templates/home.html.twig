@@ -3,47 +3,47 @@
 Accueil
 {% endblock %}
 {% block body %}
-<div class="container">
-    <h1>Nos produits phares</h1>
-    <div class="row">
-        {% for i in 1..3 %}
-        <div class="col">
-            <div class="card">
-                <img src="https://picsum.photos/400/400" class="img-fluid" alt="image du  produit">
-                <div class="card-body">
-                    <div class="card-title">Produit X</div>
-                    <p class="card-text">Blabla</p>
-                    <a href="" class="btn btn-info">En savoir plus</a>
-                    <a href="" class="btn btn-warning">Ajouter au panier</a>
-                </div>
+
+<h1>Nos produits phares</h1>
+<div class="row">
+    {% for i in 1..3 %}
+    <div class="col">
+        <div class="card">
+            <img src="https://picsum.photos/400/400" class="img-fluid" alt="image du  produit">
+            <div class="card-body">
+                <div class="card-title">Produit X</div>
+                <p class="card-text">Blabla</p>
+                <a href="" class="btn btn-info">En savoir plus</a>
+                <a href="" class="btn btn-warning">Ajouter au panier</a>
             </div>
         </div>
-        {% endfor %}
     </div>
-    <hr>
-    <h2>Un service irréprochable</h2>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae veritatis iusto tenetur deserunt harum ad
-        sint consequatur! Unde eius alias quibusdam amet? Illo, repellendus eaque aspernatur in aliquid repellat porro?
-    </p>
-    <div class="row">
-        {% include "shared/_assurance.html.twig" with{
-        'color':'primary',
-        'icone':'truck',
-        'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
-        quaerat!'
-        } %}
-        {% include "shared/_assurance.html.twig" with{
-        'color':'success',
-        'icone':'check',
-        'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
-        quaerat!'
-        } %}
-        {% include "shared/_assurance.html.twig" with{
-        'color':'warning',
-        'icone':'lock',
-        'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
-        quaerat!'
-        } %}
-    </div>
+    {% endfor %}
 </div>
+<hr>
+<h2>Un service irréprochable</h2>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae veritatis iusto tenetur deserunt harum ad
+    sint consequatur! Unde eius alias quibusdam amet? Illo, repellendus eaque aspernatur in aliquid repellat porro?
+</p>
+<div class="row">
+    {% include "shared/_assurance.html.twig" with{
+    'color':'primary',
+    'icone':'truck',
+    'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
+    quaerat!'
+    } %}
+    {% include "shared/_assurance.html.twig" with{
+    'color':'success',
+    'icone':'check',
+    'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
+    quaerat!'
+    } %}
+    {% include "shared/_assurance.html.twig" with{
+    'color':'warning',
+    'icone':'lock',
+    'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum nemo sit asperiores saepe. Animi,
+    quaerat!'
+    } %}
+</div>
+
 {% endblock %}
