@@ -49,7 +49,41 @@ class ProductType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => "name"
             ]);
+
+
+          // $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            //     /** @var Product */
+            //     $product = $event->getData();
+            //     $form = $event->getForm();
+
+            //     if (!$product || null === $product->getId()) {
+            //         $form->add("mainPicture", FileType::class, [
+            //             "label" => "Image du produit",
+            //             'mapped' => false,
+            //             'required' => true,
+            //             'constraints' => [
+            //                 new File([
+            //                     'maxSize' => '1024k',
+            //                     'maxSizeMessage' => 'La taille de l\'image ne doit pas être supérieur à {{ limit }}',
+            //                     'uploadIniSizeErrorMessage' => 'La taille de limage ne doit pas être supérieur à {{ limit }}{{ suffix }}',
+            //                     'mimeTypes' => [
+            //                         'image/jpg',
+            //                         'image/jpeg',
+            //                     ],
+            //                     'mimeTypesMessage' => 'L\'image doit être au format .jpeg ou .jpg'
+            //                 ]),
+            //                 new NotBlank([
+            //                     "message" => "Vous devez choisir une image pour le produit."
+            //                 ])
+            //             ],
+            //         ]);
+            //     }
+            // });
+
+
     }
+
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

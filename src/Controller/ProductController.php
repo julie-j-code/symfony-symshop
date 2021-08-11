@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -60,14 +63,23 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em): Response
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, ValidatorInterface $validator): Response
     {
+        // tests du ValidatorInterface
+        $age = 200;
+        $resultat = $validator->validate($age, [
+            new LessThanOrEqual(120),
+            new GreaterThan(0)
+        ]);
+        // dd($resultat);
+
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // dd($form->getData());
             $product->setSlug(strtolower($slugger->slug($product->getName())));
             $em->persist($product);
             $em->flush();
@@ -91,6 +103,7 @@ class ProductController extends AbstractController
 
     public function edit($id, Request $request, ProductRepository $repo, EntityManagerInterface $em)
     {
+
         $product = $repo->findOneBy(['id' => $id]);
         $form = $this->createForm(ProductType::class, $product);
         // Attention pour rappel (au lieu de passer $product ci-dessus)
