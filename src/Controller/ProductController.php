@@ -98,7 +98,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($product);
+            // $em->persist($product);
             $em->flush();
 
             return $this->redirectToRoute("product_show", [

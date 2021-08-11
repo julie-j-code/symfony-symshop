@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% form_theme formView 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block body %}
+<h1>Edit Category</h1>
+
+{{ form_start(formView) }}
+<div class="row">
+    <div class="col">
+        {{ form_row(formView.name)}}
+    </div>
+</div>
+<button type="submit" class="btn btn-primary mt-2">
+    <i class="fas fa-save mr-1"></i>
+    Valider les modifications
+</button> {{ form_end(formView) }}
+
+{% endblock %}
