@@ -53,4 +53,31 @@ class CartController extends AbstractController
             "slug" => $product->getSlug()
         ]);
     }
+
+    /**
+     * @Route("/cart", name="cart_show")
+     */
+    public function show(SessionInterface $session, ProductRepository $repo)
+    {
+        $detailedCart = [];
+        $total=0;
+
+        foreach ($session->get('cart', []) as $id => $qty) {
+
+            $product = $repo->find($id);
+
+            $detailedCart[] = [
+                'product'=>$product,
+                'quantity'=>$qty
+            ];
+
+            $total += $product->getPrice() * $qty;
+        }
+            
+ 
+        return $this->render("cart/index.html.twig", [
+            "items" => $detailedCart,
+            "total" => $total
+        ]);
+    }
 }

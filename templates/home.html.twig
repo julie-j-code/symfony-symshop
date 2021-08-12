@@ -8,15 +8,7 @@ Accueil
 <div class="row">
     {% for product in products %}
     <div class="col">
-        <div class="card">
-            <img src="{{product.mainPicture}}" class="img-fluid" alt="image du  produit">
-            <div class="card-body">
-                <div class="card-title">{{product.name}}</div>
-                <p class="card-text">{{product.shortDescription}}</p>
-                <a href="{{path('product_show',{'category_slug':product.category.slug, 'slug':product.slug})}}" class="btn btn-info">En savoir plus</a>
-                <a href="{{path('cart_add',{'id':product.id})}}" class="btn btn-warning">Ajouter au panier</a>
-            </div>
-        </div>
+{% include "product/_product_card.html.twig" %}
     </div>
     {% endfor %}
 </div>
