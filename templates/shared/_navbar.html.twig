@@ -11,15 +11,18 @@
                 <!-- j'utilise la variable globale créée dans twig.yaml -->
                 {% for c in categoryRepository.findAll() %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ path("product_category", {"slug": c.slug}) }}">{{ c.name }}</a>
+                    <a class="nav-link" href="{{ path("product_category", {"slug": c.slug}) }}">{{ c.name }}</a>
                 </li>
                 {% endfor %}
             </ul>
             <ul class="navbar-nav">
+                {% if app.user %}
+                <li class="nav-item"><a href="{{path('app_logout')}}" class="btn btn-danger">Logout</a></li>
+                {% else %}
                 <li class="nav-item"><a href="#" class="nav-link">Inscription</a></li>
-                <li class="nav-item"><a href="#" class="btn btn-success">Login</a></li>
-                <li class="nav-item"><a href="#" class="btn btn-danger">Logout</a></li>
-              </ul>
+                <li class="nav-item"><a href="{{path('app_login')}}" class="btn btn-success">Login</a></li>                   
+                {% endif %}
+            </ul>
 
         </div>
     </div>
