@@ -17,9 +17,11 @@ class AppFixtures extends Fixture
 {
 
     protected $slugger;
+    protected $encoder;
     public function __construct(SluggerInterface $slugger, UserPasswordEncoderInterface $encoder)
     {
         $this->slugger = $slugger;
+        $this->encoder = $encoder;
     }
 
 
