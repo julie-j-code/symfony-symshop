@@ -21,6 +21,7 @@
         "symfony/framework-bundle": "5.1.*",
         "symfony/maker-bundle": "^1.33",
         "symfony/proxy-manager-bridge": "5.1.*",
+        "symfony/security-bundle": "5.1.*",
         "symfony/security-csrf": "5.1.*",
         "symfony/string": "5.1.*",
         "symfony/translation": "5.1.*",

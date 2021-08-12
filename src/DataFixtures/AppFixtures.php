@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
 use Bezhanov\Faker\Provider\Commerce;
@@ -33,7 +34,24 @@ class AppFixtures extends Fixture
         // nouveau provider auquel on passe l'instance de Faker pour qu'elle soit enrichie de ce nouveau provider
         $faker->addProvider(new PicsumPhotosProvider($faker));
 
+        $admin = new User;
 
+        $admin->setEmail('jeannet.julie@gmail.com')
+              ->setPassword("password")
+              ->setFullName("admin")
+              ->setRoles(['ROLE_ADMIN']);
+        
+        $manager->persist($admin);
+        
+        for ($u=0; $u < 5; $u++) { 
+            $user = new User;
+            $user->setEmail("user$u@gmail.com")
+                 ->setPassword("password")
+                 ->setFullName($faker->name());
+            $manager->persist($user);
+        }
+
+        
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
             $category->setName($faker->department)
