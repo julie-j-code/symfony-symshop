@@ -3,6 +3,7 @@
 namespace App\Cart;
 
 use App\Repository\ProductRepository;
+use App\Service\Cart\CartItem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartService
@@ -44,6 +45,10 @@ class CartService
         foreach ($this->session->get('cart', []) as $id => $qty) {
 
             $product = $this->repo->find($id);
+            // ajout garde fou si un produit dans la session n'existe plus en base
+            if (!$product) {
+                continue;
+            }
 
             $total += $product->getPrice() * $qty;
         }
@@ -58,10 +63,12 @@ class CartService
 
             $product = $this->repo->find($id);
 
-            $detailedCart[] = [
-                'product' => $product,
-                'quantity' => $qty
-            ];
+            // ajout garde fou si un produit dans la session n'existe plus en base
+            if (!$product) {
+                continue;
+            }
+
+            $detailedCart[] = new CartItem($product, $qty);
         }
 
         return $detailedCart;
