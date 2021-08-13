@@ -28,12 +28,61 @@ class CartController extends AbstractController
         $cartService->add($id);
 
         /** @var FlashBag */
-        $this->addFlash('success', "Le produit a bien été ajouté au panier.");     
-       
+        $this->addFlash('success', "Le produit a bien été ajouté au panier.");
+
         return $this->redirectToRoute("product_show", [
             "category_slug" => $product->getCategory()->getSlug(),
             "slug" => $product->getSlug()
         ]);
+    }
+
+    /**
+     * @Route("/cart/delete/{id}", name="cart_delete", requirements={"id":"\d+"})
+     */
+    public function delete($id, ProductRepository $repo, CartService $cartService): Response
+    {
+        $product = $repo->find($id);
+        if (!$product) {
+            throw new NotFoundHttpException("Le produit demandé n'existe pas et ne peut donc pas être ajouté.");
+        }
+
+        $cartService->remove($id);
+
+        $this->addFlash('success', "Le produit a bien été retiré du panier.");
+
+        return $this->redirectToRoute("cart_show");
+    }
+    /**
+     * @Route("/cart/decrement/{id}", name="cart_decrement", requirements={"id":"\d+"})
+     */
+    public function decrement($id, ProductRepository $repo, CartService $cartService): Response
+    {
+        $product = $repo->find($id);
+        if (!$product) {
+            throw new NotFoundHttpException("Le produit demandé n'existe pas et ne peut donc pas être ajouté.");
+        }
+
+        $cartService->decrement($id);
+
+        $this->addFlash('success', "La quantité a bien été diminuée.");
+
+        return $this->redirectToRoute("cart_show");
+    }
+    /**
+     * @Route("/cart/increment/{id}", name="cart_increment", requirements={"id":"\d+"})
+     */
+    public function increment($id, ProductRepository $repo, CartService $cartService): Response
+    {
+        $product = $repo->find($id);
+        if (!$product) {
+            throw new NotFoundHttpException("Le produit demandé n'existe pas et ne peut donc pas être ajouté.");
+        }
+
+        $cartService->increment($id);
+
+        $this->addFlash('success', "La quantité a bien été augmentée.");
+
+        return $this->redirectToRoute("cart_show");
     }
 
     /**
@@ -42,8 +91,8 @@ class CartController extends AbstractController
     public function show(CartService $cartService)
     {
 
-            $detailedCart = $cartService->showDetails();
-            $total = $cartService->getTotal();
+        $detailedCart = $cartService->showDetails();
+        $total = $cartService->getTotal();
 
         return $this->render("cart/index.html.twig", [
             "items" => $detailedCart,

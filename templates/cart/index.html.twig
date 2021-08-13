@@ -22,10 +22,12 @@
                         <td>{{ item.product.price }}</td>
                         <td>
                             {{ item.qty }}
+                            <a href="{{path('cart_decrement', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+                            <a href="{{path('cart_increment', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i></a>
                         </td>
                         <td>{{ item.total }}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                            <a href="{{path('cart_delete', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
                 {% endfor %}

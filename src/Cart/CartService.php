@@ -55,6 +55,45 @@ class CartService
 
         return $total;
     }
+
+    public function remove($id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        unset($cart[$id]);
+
+        $this->session->set('cart', $cart);
+    }
+
+    public function decrement($id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        // 1. Le produit est à 1, il faut donc le supprimer
+
+        if ($cart[$id] === 1) {
+            $this->remove($id);
+            // on a fini :
+            return;
+        }
+
+        // 2. Le produit est à plus de 1, il faut le décrémenter
+        $cart[$id]--;
+
+        $this->session->set('cart', $cart);
+    }
+
+    public function increment($id)
+    {
+        $cart = $this->session->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+            $cart[$id]++;
+        }
+
+        $this->session->set('cart', $cart);
+    }
+
     public function showDetails()
     {
         $detailedCart = [];
