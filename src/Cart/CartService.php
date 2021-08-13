@@ -21,28 +21,34 @@ class CartService
         $this->repo = $repo;
     }
 
+    protected function getCart(): array
+    {
+        return $this->session->get('cart', []);
+    }
+    
+    protected function setCart(array $cart)
+    {
+        $this->session->set('cart', $cart);
+    }
+
     public function add($id)
     {
-        // 1. je vérifie si j'ai un panier dans la session
-        // 2. si j'ai rien, je passe un tableau vide
-        $cart = $this->session->get('cart');
-        // 3. si le produit $id existe déjà dans le tableau la session
-        // 4. je l'incrémante sachant que le tableau ressemblera à
-        // 5. sinon je l'ajoute avec la quantité 1
-        if (array_key_exists($id, $cart)) {
-            $cart[$id]++;
-        } else {
-            $cart[$id] = 1;
+        $cart = $this->getCart();
+
+        if (!array_key_exists($id, $cart)) {
+            $cart[$id] = 0;
         }
-        // 6. Enregistrer le tableau mis à jour dans la session
-        $this->session->set('cart', $cart);
+
+        $cart[$id]++;
+
+        $this->setCart($cart);
     }
 
     public function getTotal()
     {
         $total = 0;
 
-        foreach ($this->session->get('cart', []) as $id => $qty) {
+        foreach ($this->getCart() as $id => $qty) {
 
             $product = $this->repo->find($id);
             // ajout garde fou si un produit dans la session n'existe plus en base
@@ -58,16 +64,16 @@ class CartService
 
     public function remove($id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         unset($cart[$id]);
 
-        $this->session->set('cart', $cart);
+        $this->setCart($cart);
     }
 
     public function decrement($id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         // 1. Le produit est à 1, il faut donc le supprimer
 
@@ -80,25 +86,25 @@ class CartService
         // 2. Le produit est à plus de 1, il faut le décrémenter
         $cart[$id]--;
 
-        $this->session->set('cart', $cart);
+        $this->setCart($cart);
     }
 
     public function increment($id)
     {
-        $cart = $this->session->get('cart', []);
+        $cart = $this->getCart();
 
         if (array_key_exists($id, $cart)) {
             $cart[$id]++;
         }
 
-        $this->session->set('cart', $cart);
+        $this->setCart($cart);
     }
 
     public function showDetails()
     {
         $detailedCart = [];
 
-        foreach ($this->session->get('cart', []) as $id => $qty) {
+        foreach ($this->getCart() as $id => $qty) {
 
             $product = $this->repo->find($id);
 
