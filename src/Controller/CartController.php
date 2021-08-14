@@ -7,6 +7,7 @@ use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartController extends AbstractController
@@ -23,7 +24,8 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/{id}", name="cart_add", requirements={"id":"\d+"})
      */
-    public function index($id): Response
+
+    public function index($id, Request $request): Response
     {
         // 0. S'assurer que le  produit existe
         $product = $this->repo->find($id);
@@ -34,6 +36,10 @@ class CartController extends AbstractController
         $this->cartService->add($id);
 
         $this->addFlash('success', "Le produit a bien été ajouté au panier.");
+
+        if ($request->query->get('backToCart')) {
+            return $this->redirectToRoute("cart_show");
+        }
 
         return $this->redirectToRoute("product_show", [
             "category_slug" => $product->getCategory()->getSlug(),
@@ -58,7 +64,7 @@ class CartController extends AbstractController
 
         return $this->redirectToRoute("cart_show");
     }
-    
+
     /**
      * @Route("/cart/decrement/{id}", name="cart_decrement", requirements={"id":"\d+"})
      */
@@ -100,7 +106,6 @@ class CartController extends AbstractController
 
     public function show()
     {
-
         $detailedCart = $this->cartService->showDetails();
         $total = $this->cartService->getTotal();
 

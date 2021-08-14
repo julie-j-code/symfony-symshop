@@ -3,6 +3,9 @@
 {% block title %}Panier{% endblock %}
 
 {% block body %}
+
+{% include "/shared/_flashes.html.twig" %}
+
     <h1>Votre panier:</h1>
     {% if items | length > 0 %}
         <table class="table table-hover">
@@ -23,7 +26,7 @@
                         <td>
                             {{ item.qty }}
                             <a href="{{path('cart_decrement', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
-                            <a href="{{path('cart_increment', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i></a>
+                            <a href="{{path('cart_increment', {'id':item.product.id})}}?backToCart=true" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i></a>
                         </td>
                         <td>{{ item.total }}</td>
                         <td>

@@ -3,15 +3,7 @@
 {% block title %}Product Details!{% endblock %}
 
 {% block body %}
-{% for rubrique, messages in app.flashes %}
-<div class="alert alert-{{rubrique}}">
-    {% for message in messages %}
-    <p>{{message}}</p>
-    {% endfor %}
-</div>
-
-{% endfor %}
-
+{% include "/shared/_flashes.html.twig" %}
 
 <h1>{{product.name}} ({{product.price}}€)</h1>
 <ol class="breadcrumb">
