@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Purchase;
 use Bezhanov\Faker\Provider\Commerce;
 use Bluemmb\Faker\PicsumPhotosProvider;
 use Doctrine\Persistence\ObjectManager;
@@ -41,24 +42,27 @@ class AppFixtures extends Fixture
         $hash = $this->encoder->encodePassword($admin, 'password');
 
         $admin->setEmail('jeannet.julie@gmail.com')
-              ->setPassword($hash)
-              ->setFullName("admin")
-              ->setRoles(['ROLE_ADMIN']);
-        
+            ->setPassword($hash)
+            ->setFullName("admin")
+            ->setRoles(['ROLE_ADMIN']);
+
         $manager->persist($admin);
 
 
-        
-        for ($u=0; $u < 5; $u++) { 
+        $users = [];
+        for ($u = 0; $u < 5; $u++) {
             $user = new User;
             $hash = $this->encoder->encodePassword($user, 'password');
             $user->setEmail("user$u@gmail.com")
-                 ->setPassword($hash)
-                 ->setFullName($faker->name());
+                ->setPassword($hash)
+                ->setFullName($faker->name());
+
+            $users[] = $user;
+
             $manager->persist($user);
         }
 
-        
+
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
             $category->setName($faker->department)
@@ -66,7 +70,7 @@ class AppFixtures extends Fixture
 
             $manager->persist($category);
 
-            for ($p = 0; $p < mt_rand(15,20); $p++) {
+            for ($p = 0; $p < mt_rand(15, 20); $p++) {
                 $product = new Product;
                 $product->setName($faker->productName())
                     ->setPrice(mt_rand(100, 200))
@@ -74,10 +78,26 @@ class AppFixtures extends Fixture
                     ->setSlug(strtolower($this->slugger->slug($product->getName())))
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
-                    ->setMainPicture($faker->imageUrl(400,400,true));
+                    ->setMainPicture($faker->imageUrl(400, 400, true));
 
                 $manager->persist($product);
             }
+        }
+
+        for ($p = 0; $p < mt_rand(20, 40); $p++) {
+            $purchase = new Purchase;
+            $purchase->setFullname($faker->name())
+                ->setAddress($faker->streetAddress)
+                ->setPostalCode($faker->postcode)
+                ->setCity($faker->city)
+                ->setUser($faker->randomElement($users))
+                ->setTotal(mt_rand(2000, 30000));
+
+            if ($faker->boolean(90)) {
+                $purchase->setStatus(Purchase::STATUS_PAID);
+            }
+
+            $manager->persist($purchase);
         }
 
         $manager->flush();
