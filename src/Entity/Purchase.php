@@ -55,6 +55,11 @@ public const STATUS_PAID = "PAID";
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $purchasedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +145,18 @@ public const STATUS_PAID = "PAID";
     public function setCity(string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getPurchasedAt(): ?\DateTime
+    {
+        return $this->purchasedAt;
+    }
+
+    public function setPurchasedAt(\DateTime $purchasedAt): self
+    {
+        $this->purchasedAt = $purchasedAt;
 
         return $this;
     }

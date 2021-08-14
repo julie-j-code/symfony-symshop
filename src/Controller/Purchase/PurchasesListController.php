@@ -1,48 +1,29 @@
 <?php
 
-namespace App\Controller\Purchases;
+namespace App\Controller\Purchase;
 
-use App\Repository\PurchaseRepository;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Routing\RouterInterface;
+use App\Entity\User;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Twig\Environment;
 
-class PurchaseListController extends AbstractController
-{
-    protected $security;
-    protected $routerInterface;
-    protected $environnement;
+/**
+ * Vérifie si l'utilisateur est connecté et le redirige vers l'historique de ses commandes
+ */
+class PurchasesListController extends AbstractController{
 
-    function __construct(Security $security, RouterInterface $routerInterface, Environment $twig)
-    {
-        $this->security = $security;
-        $this->routerInterface = $routerInterface;
-        $this->environnement = $twig;
-    }
     /**
-     * Afficher les commandes d'un utilisateur
-     *@Route("/purchases", name="purchase_index)
-     * @param PurchaseRepository $repo
-     * @return void
+     * @Route("/purchases", name="purchase_index")
+     * @IsGranted("ROLE_USER", message="Vous devez être authentifié pour pouvoir accéder à vos commandes.")
      */
-    public function index(PurchaseRepository $repo)
+    public function index(): Response
     {
+        /**@var User */
+        $user= $this->getUser();
 
-        // 1 Nous devons nous assurer que la personne est connectée
-       /** @var User */
-        $user = $this->security->getUser();
-
-        if(!$user){
-            $url=$this->router->generate('home');
-            return new RedirectResponse($url);
-        }
-
-        $html = $this->environnement->render('purchase/index.html.twig', [
-            'purchases'=>$user->getPurchases()
+        return $this->render("purchase/index.html.twig", [
+            "purchases" => $user->getPurchases()
         ]);
-
-
     }
 }
