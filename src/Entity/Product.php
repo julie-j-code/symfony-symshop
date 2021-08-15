@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -67,6 +69,17 @@ class Product
      * )
      */
     private $shortDescription;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PurchaseItem::class, mappedBy="product")
+     */
+    private $purchaseItems;
+
+    public function __construct()
+    {
+        $this->purchaseItems = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -144,4 +157,36 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return Collection|PurchaseItem[]
+     */
+    public function getPurchaseItems(): Collection
+    {
+        return $this->purchaseItems;
+    }
+
+    public function addPurchaseItems(PurchaseItem $purchaseItems): self
+    {
+        if (!$this->purchaseItems->contains($purchaseItems)) {
+            $this->purchaseItems[] = $purchaseItems;
+            $purchaseItems->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchaseItems(PurchaseItem $purchaseItems): self
+    {
+        if ($this->purchaseItems->removeElement($purchaseItems)) {
+            // set the owning side to null (unless already changed)
+            if ($purchaseItems->getProduct() === $this) {
+                $purchaseItems->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

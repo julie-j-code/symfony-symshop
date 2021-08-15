@@ -23,6 +23,11 @@
                 <td>{{ p.address }}<br>{{ p.postalCode }}, {{ p.city }}</td>
                 <td>{{ p.purchasedAt | date('d/m/Y à H:i') }}</td>
                 <td>
+                    <ul>
+                        {% for item in p.purchaseItems %}
+                            <li>{{ item.quantity }}x {{ item.productName }} ({{ item.total / 100 }}€)</li>
+                        {% endfor %}
+                    </ul>
                 </td>
                 <td>{{ p.total / 100}}€</td>
                 <td>{{ p.status }}</td>
