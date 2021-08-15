@@ -62,12 +62,11 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-
+        $products = [];
         for ($c = 0; $c < 3; $c++) {
             $category = new Category;
             $category->setName($faker->department)
                 ->setSlug(strtolower($this->slugger->slug($category->getName())));
-
             $manager->persist($category);
 
             for ($p = 0; $p < mt_rand(15, 20); $p++) {
@@ -79,6 +78,8 @@ class AppFixtures extends Fixture
                     ->setCategory($category)
                     ->setShortDescription($faker->paragraph())
                     ->setMainPicture($faker->imageUrl(400, 400, true));
+
+                    $products[] = $product;
 
                 $manager->persist($product);
             }
@@ -93,6 +94,8 @@ class AppFixtures extends Fixture
                 ->setUser($faker->randomElement($users))
                 ->setTotal(mt_rand(2000, 30000))
                 ->setPurchasedAt($faker->dateTimeBetween('-6 months', 'now'));
+
+            $selectedProducts = $faker->randomElements($products, mt_rand(3, 5));
 
             if ($faker->boolean(90)) {
                 $purchase->setStatus(Purchase::STATUS_PAID);

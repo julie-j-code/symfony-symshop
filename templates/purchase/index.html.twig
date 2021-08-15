@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ p.id }}</td>
                 <td>{{ p.address }}<br>{{ p.postalCode }}, {{ p.city }}</td>
-                <td></td>
+                <td>{{ p.purchasedAt | date('d/m/Y à H:i') }}</td>
                 <td>
                 </td>
                 <td>{{ p.total / 100}}€</td>

@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PurchasesListController extends AbstractController{
 
     /**
-     * @Route("/purchases", name="purchase_index")
+     * @Route("/purchases", name="purchase_index", priority=3)
      * @IsGranted("ROLE_USER", message="Vous devez être authentifié pour pouvoir accéder à vos commandes.")
      */
     public function index(): Response
