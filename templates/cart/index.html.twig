@@ -6,44 +6,62 @@
 
 {% include "/shared/_flashes.html.twig" %}
 
-    <h1>Votre panier:</h1>
-    {% if items | length > 0 %}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Total</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td>{{ item.product.name }}</td>
-                        <td>{{ item.product.price }}</td>
-                        <td>
-                            {{ item.qty }}
-                            <a href="{{path('cart_decrement', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
-                            <a href="{{path('cart_increment', {'id':item.product.id})}}?backToCart=true" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i></a>
-                        </td>
-                        <td>{{ item.total }}</td>
-                        <td>
-                            <a href="{{path('cart_delete', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">Total:</th>
-                    <td colspan="2">{{ total }}</td>
-                </tr>
-            </tfoot>
-        </table>
-    {% else %}
-        <h2>Votre panier est actuellemnt vide.</h2>
-    {% endif %}
+<h1>Votre panier:</h1>
+{% if items | length > 0 %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Produit</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Quantité</th>
+            <th scope="col">Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>
+                {{ item.qty }}
+                <a href="{{path('cart_decrement', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i
+                        class="fas fa-minus"></i></a>
+                <a href="{{path('cart_increment', {'id':item.product.id})}}?backToCart=true"
+                    class="btn btn-sm btn-danger"><i class="fas fa-plus"></i></a>
+            </td>
+            <td>{{ item.total }}</td>
+            <td>
+                <a href="{{path('cart_delete', {'id':item.product.id})}}" class="btn btn-sm btn-danger"><i
+                        class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">Total:</th>
+            <td colspan="2">{{ total }}</td>
+        </tr>
+    </tfoot>
+</table>
+<hr>
+{% if app.user %}
+<h2>Ajoutez votre adresse de livraison</h2>
+{{ form_start(confirmationForm, {'action': path("purchase_confirm")}) }}
+{{ form_widget(confirmationForm) }}
+<button type="submit" class="btn btn-success">Passer au paiement</button>
+{{ form_end(confirmationForm) }}
+{% else %}
+<h2>Vous devez être connecté pour passer une commande</h2>
+<p>
+    <a href="{{ path('security_login') }}" class="btn btn-primary">Connexion</a>
+    ou
+    <a href="#">Inscription</a>
+</p>
+{% endif %}
+{% else %}
+<h2>Votre panier est actuellemnt vide.</h2>
+{% endif %}
 
 {% endblock %}

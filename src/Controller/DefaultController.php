@@ -18,7 +18,7 @@ class DefaultController
     }
 
     /**
-     *@Route("/", name="index")
+     *@Route("/test", name="index")
      */
     public function index()
     {
