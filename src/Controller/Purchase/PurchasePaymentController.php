@@ -5,7 +5,6 @@ namespace App\Controller\Purchase;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use App\Repository\PurchaseRepository;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -33,13 +32,13 @@ class PurchasePaymentController extends AbstractController
 
                 $intent = PaymentIntent::create([
                     'amount' => $purchase->getTotal(),
-                    'currency' => 'usd',
+                    'currency' => 'eur'
                 ]);
 
 
         return $this->render('purchase/payment.html.twig', [
             'purchase' => $purchase,
-            'clientSecret' => $intent->client_secret,
+            'clientSecret' => $intent->client_secret
         ]);
     }
 }

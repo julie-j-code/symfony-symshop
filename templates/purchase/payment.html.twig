@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Payez votre commande avec Stripe</h1>
+    {% include "/shared/_flashes.html.twig" %}
     <form id="payment-form">
       <div id="card-element"><!--Stripe.js injects the Card Element--></div>
       <button id="submit" class="btn btn-success">
@@ -19,7 +20,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    const clientSecret = '{{ clientSecret }}';
+    const clientSecret = "{{ clientSecret }}";
     const stripe = Stripe("pk_test_51JP1n9E1UVBLYvWcGaedyPvPAfh2QXNjWJEPITK6YAVfPJQWC9uQXuCGJhDJwBu6lqdHGRxt7AQnfTmpWvnBTk5j00Pyb3RzxP");
     const elements = stripe.elements();
     const card = elements.create("card");
@@ -30,7 +31,7 @@
         document.querySelector("button").disabled = event.empty;
         document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
     });
-    var form = document.getElementById("payment-form");
+    const form = document.getElementById("payment-form");
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         // Complete payment when the submit button is clicked
@@ -47,7 +48,7 @@
                     console.log(result.error.message);
                 } else {
                     // The payment succeeded!
-                    console.log(result);
+                    window.location.href = "{{ url('purchase_payment_success', {'id': purchase.id}) }}";   
                 }
             });
     });

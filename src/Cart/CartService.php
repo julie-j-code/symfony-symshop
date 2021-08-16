@@ -119,5 +119,16 @@ class CartService
         return $detailedCart;
     }
 
+
+    protected function saveCart(array $cart)
+    {
+        $this->session->set('cart', $cart);
+    }
+
+    public function empty()
+    {
+        $this->saveCart([]);
+    }
+
     
 }
