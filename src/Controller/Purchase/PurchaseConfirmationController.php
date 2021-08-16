@@ -18,20 +18,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * This controller handles the purchase and create it if its valid
  */
-class PurchaseConfirmationController extends AbstractController {
+class PurchaseConfirmationController extends AbstractController
+{
 
     /**
      * CartService instance
      *
      * @var CartService $cartService
      */
-    protected $cartService;    
+    protected $cartService;
     /**
      * EntityManagerInterface instance
      *
      * @var EntityManagerInterface $em
      */
-    protected $em;    
+    protected $em;
     /**
      * PurchasePersister instance
      *
@@ -72,7 +73,12 @@ class PurchaseConfirmationController extends AbstractController {
         $purchase = $form->getData();
         $this->persister->storePurchase($purchase);
 
-        $this->addFlash('success', 'La commande a bien été enregistrée.');
-        return $this->redirectToRoute("purchase_index");
+        // maintenant qu'on souhaite faire une redirection vers l'interface de paiement :
+        // $this->cartService->empty();
+        // $this->addFlash('success', 'La commande a bien été enregistrée.');
+        // return $this->redirectToRoute("purchase_index");
+        return $this->redirectToRoute("purchase_payment_form", [
+            'id' => $purchase->getId()
+        ]);
     }
-} 
+}
