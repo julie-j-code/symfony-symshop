@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartService
 {
-
     // A l'intitialisation du service, on se fait livrer la SessionInterface
     // Pour ne pas avoir besoin de la passer en argument de la function add
 

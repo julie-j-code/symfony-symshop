@@ -50,12 +50,12 @@
 <h2>Ajoutez votre adresse de livraison</h2>
 {{ form_start(confirmationForm, {'action': path("purchase_confirm")}) }}
 {{ form_widget(confirmationForm) }}
-<button type="submit" class="btn btn-success">Passer au paiement</button>
+<button type="submit" class="btn btn-success mt-2">Passer au paiement</button>
 {{ form_end(confirmationForm) }}
 {% else %}
 <h2>Vous devez être connecté pour passer une commande</h2>
 <p>
-    <a href="{{ path('security_login') }}" class="btn btn-primary">Connexion</a>
+    <a href="{{ path('security_login') }}" class="btn btn-primary ">Connexion</a>
     ou
     <a href="#">Inscription</a>
 </p>
