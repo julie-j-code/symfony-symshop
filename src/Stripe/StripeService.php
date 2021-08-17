@@ -7,25 +7,32 @@ use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Symfony\Component\Console\Input\StringInput;
 
-class StripeService{
+class StripeService
+{
 
     // test secret API key
     protected $secretKey;
     protected $publicKey;
 
-public function __construct(string $secretKey,string $publicKey)
-{
-    $this->secretKey = $secretKey;
-    $this->publicKey = $publicKey;
-}
+    public function __construct(string $secretKey, string $publicKey)
+    {
+        $this->secretKey = $secretKey;
+        $this->publicKey = $publicKey;
+    }
 
-    public function getPaymentIntent(Purchase $purchase){
-         // This is my real test secret API key.
-         Stripe::setApiKey($this->secretKey);
+    public function getPublicKey():string
+    {
+        return $this->publicKey;
+    }
 
-         return $intent = PaymentIntent::create([
-             'amount' => $purchase->getTotal(),
-             'currency' => 'eur'
-         ]);
+    public function getPaymentIntent(Purchase $purchase)
+    {
+        // This is my real test secret API key.
+        Stripe::setApiKey($this->secretKey);
+
+        return $intent = PaymentIntent::create([
+            'amount' => $purchase->getTotal(),
+            'currency' => 'eur'
+        ]);
     }
 }
