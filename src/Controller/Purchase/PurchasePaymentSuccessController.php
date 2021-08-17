@@ -2,11 +2,13 @@
 
 namespace App\Controller\Purchase;
 
-use App\Cart\CartService;
 use App\Entity\Purchase;
+use App\Cart\CartService;
+use App\Event\PurchaseSuccessEvent;
 use App\Repository\PurchaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -19,12 +21,10 @@ class PurchasePaymentSuccessController extends AbstractController
      * @Route("/purchase/terminate/{id}", name="purchase_payment_success")
      * $IsGranted("ROLE_USER")
      */
-    public function success(int $id, PurchaseRepository $repo, EntityManagerInterface $em, CartService $cartService)
+    public function success(int $id, PurchaseRepository $repo, EntityManagerInterface $em, CartService $cartService, EventDispatcherInterface $dispatcher)
     {
 
-        // 1 Je récupère la commande
         $purchase = $repo->find($id);
-        // 2 je la fais passer au status PAID
         if (
             !$purchase
             || $purchase && $purchase->getUser() !== $this->getUser()
@@ -36,8 +36,12 @@ class PurchasePaymentSuccessController extends AbstractController
 
         $purchase->setStatus(Purchase::STATUS_PAID);
         $em->flush();
-        // 3 je vide le panier
+
         $cartService->empty();
+
+        $purchaseEvent = new PurchaseSuccessEvent($purchase);
+        $dispatcher->dispatch($purchaseEvent, "purchase.success");
+
 
 
         // 4 je redirige avec un message de succes vers la liste des commandes
