@@ -3,9 +3,12 @@
 namespace App\Controller\Purchase;
 
 use Stripe\Stripe;
+use App\Entity\Purchase;
 use Stripe\PaymentIntent;
 use App\Repository\PurchaseRepository;
+use App\Stripe\StripeService;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -16,25 +19,23 @@ class PurchasePaymentController extends AbstractController
 
     /**
      * @Route("/purchase/pay/{id}", name="purchase_payment_form")
+     * $IsGranted("ROLE_USER")
      */
-    public function showCardForm(int $id, PurchaseRepository $repo)
+    public function showCardForm(int $id, PurchaseRepository $repo, StripeService $stripe)
     {
 
         $purchase = $repo->find($id);
         if (
             !$purchase
+            || $purchase && $purchase->getUser() !== $this->getUser()
+            || $purchase->getStatus() === Purchase::STATUS_PAID
         ) {
+            $this->addFlash('message', "cette commande n'existe  pas");
             return $this->redirectToRoute("cart_show");
         }
 
-                // This is my real test secret API key.
-                Stripe::setApiKey('sk_test_51JP1n9E1UVBLYvWcF8nn6yNlMAPRIGpn4NR4xNYzjuapIuGa3yEJngXWBa0iWFUklkNekQb4blVyA7YJVYdcJbyB009CiYB3yr');
-
-                $intent = PaymentIntent::create([
-                    'amount' => $purchase->getTotal(),
-                    'currency' => 'eur'
-                ]);
-
+        //    on fait maintenant appel au service dédié
+        $intent = $stripe->getPaymentIntent($purchase);
 
         return $this->render('purchase/payment.html.twig', [
             'purchase' => $purchase,
