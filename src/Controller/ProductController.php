@@ -21,7 +21,7 @@ class ProductController extends AbstractController
 {
     /**
      * On veut d'abord afficher une catégorie
-     * @Route("/{slug}", name="product_category")
+     * @Route("/product/{slug}", name="product_category")
      */
     public function category(Request $req, $slug, CategoryRepository $repo): Response
     {
@@ -44,7 +44,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{category_slug}/{slug}", name="product_show")
+     * @Route("/product/{category_slug}/{slug}", name="product_show")
      */
 
     public function show($slug, ProductRepository $repo)
